@@ -12,6 +12,10 @@ import {
   Button,
 } from "@nextui-org/react";
 import Categories from "./Categories";
+import CartDrawer from "../CartDrawer";
+import { getDocs, collection } from "firebase/firestore"
+import { db } from "@/firebase/config";
+
 
 const menuItems = [
   "Profile",
@@ -36,11 +40,19 @@ const menuEcommerce = [
 export default function Header() {
   const [isOpenMenu, setIsOpenMenu] = useState(false);
   const [categories, setCategories] = useState([]);
+  const [cartDrawer, setCartDrawer] = useState(false)
+
+  const handleCartDrawer = () => setCartDrawer(!cartDrawer)
 
   const handleGetAllCategories = async () => {
-    let response = await fetch("https://fakestoreapi.com/products/categories");
-    let categories = await response.json();
-    setCategories(categories);
+    const categoriasRef = collection(db, "categorias")
+    const querySnapshot = await getDocs(categoriasRef)
+    let categories = querySnapshot.docs.map(doc => {
+      const data = doc.data()
+      const id = doc.id
+      return { id, ...data }
+    })
+    setCategories(categories)
   };
 
   useEffect(() => {
@@ -69,6 +81,12 @@ export default function Header() {
             </Link>
           </NavbarItem>
         ))}
+        <NavbarItem >
+          <Button /* color="" */ className="text-white" onClick={() => handleCartDrawer()} >
+            Carrito
+          </Button>
+        </NavbarItem>
+        <CartDrawer open={cartDrawer} handleDrawer={handleCartDrawer} />
       </NavbarContent>
       <NavbarItem className="">
         <Button as={Link} className="text-blue-700 bg-white" href="/ingresar">
@@ -104,6 +122,11 @@ export default function Header() {
             </Link>
           </NavbarMenuItem>
         ))}
+        <NavbarMenuItem>
+          <Link className="w-full" href="/categoria" size="lg">
+            Categorias
+          </Link>
+        </NavbarMenuItem>
       </NavbarMenu>
     </Navbar>
   );

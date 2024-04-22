@@ -8,6 +8,12 @@ const nextConfig = {
         port: "",
         pathname: "/img/**",
       },
+      {
+        protocol: "https",
+        hostname: "http2.mlstatic.com",
+        port: "",
+        pathname: "/**"
+      }
     ],
   },
 };

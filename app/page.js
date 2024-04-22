@@ -1,4 +1,7 @@
+import { db } from "@/firebase/config";
 import ProductItem from "./components/ProductItem";
+import { collection, getDocs } from "firebase/firestore"
+
 
 export const metadata = {
   title: "Inicio",
@@ -6,8 +9,13 @@ export const metadata = {
 };
 
 const getAllProducts = async () => {
-  let response = await fetch("https://fakestoreapi.com/products");
-  return response.json();
+  const productosRef = collection(db, "productos")
+  const querySnapshot = await getDocs(productosRef)
+  return querySnapshot.docs.map(doc => {
+    const data = doc.data()
+    const id = doc.id
+    return { id, ...data }
+  })
 };
 
 export default async function Home() {

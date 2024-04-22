@@ -1,14 +1,18 @@
 import Image from "next/image";
+import { getDoc, collection, query, where, doc } from "firebase/firestore"
+import { db } from "@/firebase/config";
+import QuantitySelector from "@/app/components/QuantitySelector";
+
 
 const getProductById = async (id) => {
-  const response = await fetch(`https://fakestoreapi.com/products/${id}`);
-  return response.json();
+  const productosRef = doc(db, "productos", id)
+  const querySnapshot = await getDoc(productosRef)
+  return querySnapshot.data()
 };
 
 export default async function VerProducto({ params }) {
   const { id } = params;
   const productDetail = await getProductById(id);
-
   return (
     <main className="container m-auto p-5 flex justify-center items-center">
       <div className="p-5 bg-white rounded-lg w-5/6">
@@ -17,8 +21,8 @@ export default async function VerProducto({ params }) {
         <div className="flex justify-center items-center">
           <Image
             src={productDetail.image}
-            width={200}
-            height={200}
+            width={300}
+            height={300}
             alt="product image"
             className="mt-5"
           />
@@ -26,7 +30,9 @@ export default async function VerProducto({ params }) {
         <hr className="mt-10 mb-5" />
         <p className="text-4xl mb-5">${productDetail.price}</p>
         <p>{productDetail.description}</p>
+        <QuantitySelector item={productDetail} />
       </div>
+
     </main>
   );
 }

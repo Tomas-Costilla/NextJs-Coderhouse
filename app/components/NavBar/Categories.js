@@ -17,8 +17,8 @@ const Categories = ({ categories }) => {
       </DropdownTrigger>
       <DropdownMenu aria-label="Static Actions">
         {categories.map((item, index) => (
-          <DropdownItem key={index} as={Link} href={`/categoria/${item}`}>
-            {item}
+          <DropdownItem key={index} as={Link} href={`/categoria/${item.description}`}>
+            {item.description}
           </DropdownItem>
         ))}
       </DropdownMenu>

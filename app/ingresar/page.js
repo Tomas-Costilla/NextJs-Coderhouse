@@ -5,11 +5,11 @@ import { useState } from "react";
 
 export default function IniciarSesion({}) {
   const [viewPassword, setViewPassword] = useState(false);
-
   const handleViewPassword = () => setViewPassword(!viewPassword);
 
   return (
     <main className="container m-auto p-5 flex justify-center">
+      <div className=""></div>
       <div className="p-3 rounded-md bg-white flex flex-col gap-3 w-full sm:w-2/3">
         <h1 className="text-xl text-center font-semibold">Iniciar sesion</h1>
         <hr></hr>
@@ -42,6 +42,7 @@ export default function IniciarSesion({}) {
             </Link>
           </p>
         </div>
+        <div className="con"></div>
       </div>
     </main>
   );

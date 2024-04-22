@@ -1,11 +1,20 @@
 import ProductItem from "@/app/components/ProductItem";
 import React from "react";
+import { getDocs, collection, query, where } from "firebase/firestore"
+import { db } from "@/firebase/config";
+
 
 const getAllProductByCategory = async (category) => {
-  let response = await fetch(
-    `https://fakestoreapi.com/products/category/${category}`
-  );
-  return response.json();
+  const productosRef = collection(db, "productos")
+  const q = category !== "" && query(productosRef, where('category', '==', category))
+  const querySnapshot = await getDocs(q)
+  return querySnapshot.docs.map(item => {
+    const productData = item.data()
+    const productId = item.id
+    return { productId, ...productData }
+  })
+
+
 };
 
 export default async function Categoria({ params }) {
