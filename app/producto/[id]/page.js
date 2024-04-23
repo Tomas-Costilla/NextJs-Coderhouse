@@ -1,13 +1,12 @@
 import Image from "next/image";
-import { getDoc, collection, query, where, doc } from "firebase/firestore"
+import { getDoc, collection, query, where, doc } from "firebase/firestore";
 import { db } from "@/firebase/config";
 import QuantitySelector from "@/app/components/QuantitySelector";
 
-
 const getProductById = async (id) => {
-  const productosRef = doc(db, "productos", id)
-  const querySnapshot = await getDoc(productosRef)
-  return querySnapshot.data()
+  const productosRef = doc(db, "productos", id);
+  const querySnapshot = await getDoc(productosRef);
+  return querySnapshot.data();
 };
 
 export default async function VerProducto({ params }) {
@@ -32,7 +31,6 @@ export default async function VerProducto({ params }) {
         <p>{productDetail.description}</p>
         <QuantitySelector item={productDetail} />
       </div>
-
     </main>
   );
 }
